@@ -1,28 +1,36 @@
+########## IP-ADDRESSE LÖSCHEN UND NEUE EINSTELLEN ##########
 unconfigure "default" ipaddress
-configure "default" ipaddress 192.168.0.2/24
+configure "default" ipaddress <ip-addresse-interface>/<netzmaske_in_CIDR>
+#configure "default" ipaddress 192.168.0.2/24
 
-=============================== IMAGE ON SECONDARY ====================================
-
-do image 192.168.0.1 <image.xos> "VR-Default" sec
+########## INSTALLATION AUF SECONDARY ##########
+do image <ip-addresse-laptop/sesrver> <image.xos> "VR-Default" sec
 y
 
-=============================== IMAGE ON PRIMARY ======================================
-
-do image 192.168.0.1 <image.xos> "VR-Default" primary
+########## INSTALLATION AUF PRIMARY ##########
+do image <ip-addresse-laptop/sesrver> <image.xos> "VR-Default" primary
 y
 
+########## NEUSTARTEN SWITCH ##########
 reboot
 y
 
-tftp get 192.168.0.1 vr vr-default <config.xsf>
+########## KONFIUGRATION ÜBERTRAGEN ##########
+tftp get <ip-addresse-laptop/sesrver> vr vr-default <config.xsf>
+
+########## KONFIUGRATION LADEN ##########
 load script <config.xsf>
 
+########## SPEICHERN PRIMARY ##########
 save
 y
+
+########## SPEICHERN SECONDARY ##########
 save secondary
 y
 n
-=============================== INFORMATION CAN BE LOGGED =============================
+
+########## BEFEHLE FÜR LOGS ##########
 di clip
 sh version
 sh switch
