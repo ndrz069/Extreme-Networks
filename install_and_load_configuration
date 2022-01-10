@@ -1,0 +1,37 @@
+unconfigure "default" ipaddress
+configure "default" ipaddress 192.168.0.2/24
+
+=============================== IMAGE ON SECONDARY ====================================
+
+do image 192.168.0.1 <image.xos> "VR-Default" sec
+y
+
+=============================== IMAGE ON PRIMARY ======================================
+
+do image 192.168.0.1 <image.xos> "VR-Default" primary
+y
+
+reboot
+y
+
+tftp get 192.168.0.1 vr vr-default <config.xsf>
+load script <config.xsf>
+
+save
+y
+save secondary
+y
+n
+=============================== INFORMATION CAN BE LOGGED =============================
+di clip
+sh version
+sh switch
+sh log sev crit
+sh log sev err
+ls
+sh lic
+sh ver imag
+sh diag
+sh conf
+sh fan
+sh power
